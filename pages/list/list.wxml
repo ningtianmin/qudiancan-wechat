@@ -1,0 +1,70 @@
+<view>
+    <!-- 左侧菜单 -->
+    <view class="list-left-menu">
+        <view wx:for="{{menu}}" wx:key="unique" class="{{index==currentCategoryIndex?'list-left-menu-box-selected':'list-left-menu-box-unselect'}}" data-index="{{index}}" bindtap='selectMenu'>
+            <view class="list-menu-name">{{item.categoryName}}</view>
+        </view>
+    </view>
+    <!-- 右侧菜单 -->
+    <scroll-view scroll-y="true" style="height:{{scrollViewHeight+'rpx'}}" bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+        <view class="content" id="item{{index}}" wx:for="{{menu}}" wx:key="unique">
+            <view class='list-tab' style="height:{{itemTabHeight+'rpx'}};line-height:{{itemTabHeight}}+'rpx';">{{item.categoryName}}</view>
+            <view class='content-list' style="height:{{itemHeight+'rpx'}}" wx:for="{{item.products}}" wx:key="unique" wx:for-item="productItem" wx:for-index="indexs">
+                <view class='list-image-box'>
+                    <image class="list-image" mode="widthFix" src='{{productItem.image}}'></image>
+                </view>
+                <view class='issue-name'>
+                    <view>{{productItem.name}}</view>
+                    <view>{{productItem.description}}</view>
+                    <view style='margin-top:20rpx;color:#F05A86'>
+                        ¥ {{productItem.price}}
+                        <i class="iconfont icon-jiahao2fill plus-icon" data-type="{{index}}" data-index="{{indexs}}" bindtap="addNum" data-product="{{productItem}}" data-product-id="{{productItem.id}}"></i>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </scroll-view>
+    <!-- 底部操作菜单 -->
+    <view class="operate-bar" wx:if="{{loading}}">
+        <view class='gouwuche'>
+            <view style='padding:5px;display:flex'>
+                <i class="iconfont icon-gouwuchefill gouwuche-icon {{sumMonney!=0?'activity-color':'' }}" bindtap="showCartList">
+                </i>
+                <view class='gouwuche-price' wx:if="{{sumMonney==0}}">购物车是空的</view>
+                <view class='gouwuche-price' style='color:white;font-size:18px' wx:if="{{sumMonney!=0}}">¥ {{sumMonney}}</view>
+            </view>
+        </view>
+        <view class="submit-btn {{sumMonney!=0?'activity-color-bg':'' }}" bindtap='goBalance'>
+            <view class="submit-btn-label {{sumMonney!=0?'color-white':'' }}">选好了</view>
+        </view>
+    </view>
+</view>
+<!-- 购物车 -->
+<view class="drawer_screen" bindtap="showCartList" data-statu="close" wx:if="{{showCart}}"></view>
+<view class="cartlist-float" wx:if="{{showCart}}">
+    <view style='background:#F0F0F0;height:30px'>
+        <label class='label-cart-bar'>
+            <label style='padding:5px'>已选商品</label>
+        </label>
+        <label class='icon-clear' bindtap='clearCart'>
+            <i class="iconfont icon-lajitong"></i>
+            <label class="label-clear">清空购物车</label>
+        </label>
+    </view>
+    <scroll-view scroll-y="true" class="{{cart.length>5?'cart-scroll-list':''}}">
+
+        <view class='cart-list-box' wx:for="{{cart}}" wx:key="unique" style='border-bottom:1px #E3E3E3 solid'>
+            <view class='list-info'>
+                <view>{{item.productName}}</view>
+            </view>
+            <view style='width:50%;padding:10px;'>
+                <view style='float:right'>
+                    <label class='activity-color'>¥ {{item.sum}}</label>
+                    <i class="iconfont icon-jian icon-li-circle" data-index="{{index}}" data-product-id="{{item.productId}}" bindtap="subtractNum"></i>
+                    {{item.productNum}}
+                    <i class="iconfont icon-jiahao2fill activity-color font20" data-product-id="{{item.productId}}" data-index="{{index}}" bindtap="addNum"></i>
+                </view>
+            </view>
+        </view>
+    </scroll-view>
+</view>

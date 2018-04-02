@@ -4,6 +4,16 @@ App({
         wx.login({
             success: res => {
                 // 发送 res.code 到后台换取 openId, sessionKey, unionId
+                wx.request({
+                    url: this.globalData.backendUrl + "/wechat/openid",
+                    data: {
+                        "jsCode": res.code
+                    },
+                    success: res => {
+                        console.log(res)
+                        this.globalData.openid = res.data.data
+                    }
+                })
             }
         })
         // 获取用户信息
@@ -28,6 +38,10 @@ App({
         })
     },
     globalData: {
-        userInfo: null
+        userInfo: null,
+        backendUrl: "http://127.0.0.1:8080",
+        branchId: 1,
+        branchTableId: 1,
+        openid: null
     }
 })
