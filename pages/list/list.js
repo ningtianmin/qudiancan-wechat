@@ -21,9 +21,8 @@ Page({
         var sumMonney = 0
         console.log(cart)
         for (var i = 0, iBorder = cart.length; i < iBorder; i++) {
-            sumMonney = sumMonney + cart[i].sum * 100
+            sumMonney += parseFloat((cart[i].sum).toFixed(2))
         }
-        sumMonney = sumMonney / 100
         this.setData({
             sumMonney: sumMonney
         })
@@ -96,8 +95,8 @@ Page({
             var cartProduct = cart[i]
             if (cartProduct.productId == productId) {
                 if (cartProduct.productNum != 1) {
-                    cartProduct.productNum = cartProduct.productNum - 1
-                    cartProduct.sum = cartProduct.productPrice * 100 * cartProduct.productNum / 100
+                    cartProduct.productNum--
+                    cartProduct.sum = parseFloat((cartProduct.productPrice * cartProduct.productNum).toFixed(2))
                 } else {
                     continue
                 }
@@ -107,7 +106,7 @@ Page({
                 "productNum": cartProduct.productNum,
                 "productName": cartProduct.productName,
                 "productPrice": cartProduct.productPrice,
-                "sum": cartProduct.productPrice
+                "sum": cartProduct.sum
             })
         }
         var showCart = cartTemp.length != 0
@@ -138,8 +137,8 @@ Page({
             var cartProduct = cart[i]
             if (cartProduct.productId == productId) {
                 exist = true
-                cartProduct.productNum = cartProduct.productNum + 1
-                cartProduct.sum = cartProduct.productPrice * 100 * cartProduct.productNum / 100
+                cartProduct.productNum++
+                cartProduct.sum = parseFloat((cartProduct.productPrice * cartProduct.productNum).toFixed(2))
             }
         }
         if (!exist) {
