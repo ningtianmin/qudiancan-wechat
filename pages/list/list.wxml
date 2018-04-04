@@ -6,10 +6,10 @@
         </view>
     </view>
     <!-- 右侧菜单 -->
-    <scroll-view scroll-y="true" style="height:{{scrollViewHeight+'rpx'}}" bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+    <scroll-view scroll-y style="height:{{scrollViewHeight+'px'}}" bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
         <view class="content" id="item{{index}}" wx:for="{{menu}}" wx:key="unique">
-            <view class='list-tab' style="height:{{itemTabHeight+'rpx'}};line-height:{{itemTabHeight}}+'rpx';">{{item.categoryName}}</view>
-            <view class='content-list' style="height:{{itemHeight+'rpx'}}" wx:for="{{item.products}}" wx:key="unique" wx:for-item="productItem" wx:for-index="indexs">
+            <view class='list-tab' style="height:{{itemTabHeight+'px'}};line-height:{{itemTabHeight}}+'px';">{{item.categoryName}}</view>
+            <view class='content-list' style="height:{{itemHeight+'px'}}" wx:for="{{item.products}}" wx:key="unique" wx:for-item="productItem" wx:for-index="indexs">
                 <view class='list-image-box'>
                     <image class="list-image" mode="widthFix" src='{{productItem.image}}'></image>
                 </view>
@@ -25,10 +25,11 @@
         </view>
     </scroll-view>
     <!-- 底部操作菜单 -->
-    <view class="operate-bar" wx:if="{{loading}}">
+    <view class="operate-bar">
         <view class='gouwuche'>
             <view style='padding:5px;display:flex'>
-                <i class="iconfont icon-gouwuchefill gouwuche-icon {{sumMonney!=0?'activity-color':'' }}" bindtap="showCartList">
+                <i class="iconfont icon-gouwuchefill gouwuche-icon {{sumMonney!=0?'activity-color':''}}" bindtap="showCartList">
+                    <span class="number-msg" wx:if="{{productCount!=0}}">{{productCount}}</span>
                 </i>
                 <view class='gouwuche-price' wx:if="{{sumMonney==0}}">购物车是空的</view>
                 <view class='gouwuche-price' style='color:white;font-size:18px' wx:if="{{sumMonney!=0}}">¥ {{sumMonney}}</view>

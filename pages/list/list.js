@@ -4,17 +4,15 @@ Page({
     data: {
         menu: [],
         cart: [],
-        loading: false,
         showCart: false,
         currentCategoryIndex: 0,
         scrollTop: 0,
         toView: 'item0',
-        scrollViewHeight: 1200,
-        bottomHeight: 100,
+        scrollViewHeight: 500,
         sumMonney: 0,
-        itemHeight: 160,
-        itemTabHeight: 40,
-        scrollTopScale: 2
+        productCount: 0,
+        itemHeight: 80,
+        itemTabHeight: 20
     },
     computeSumMonney: function () {
         var cart = this.data.cart
@@ -32,9 +30,6 @@ Page({
         wx.showLoading({
             title: '努力加载中',
         })
-        this.setData({
-            scrollViewHeight: this.data.scrollViewHeight - this.data.bottomHeight
-        })
         wx.getSystemInfo({
             success: function (res) {
                 console.log(res)
@@ -47,14 +42,19 @@ Page({
             url: app.globalData.backendUrl + "/wechat/branches/" + app.globalData.branchId + "/products",
             method: 'GET',
             success: function (res) {
-                wx.hideLoading()
+                console.log(res)
                 console.log(res)
                 page.setData({
-                    menu: res.data.data,
-                    loading: true
+                    menu: res.data.data
                 })
+            },
+            complete: function () {
+                wx.hideLoading()
             }
         })
+    },
+    onShow: function () {
+        var page = this
         wx.request({
             url: app.globalData.backendUrl + "/wechat/branches/" + app.globalData.branchId + "/cart",
             method: 'GET',
@@ -63,8 +63,14 @@ Page({
             },
             success: res => {
                 console.log(res)
+                var cart = res.data.data
+                var productCount = 0
+                for (var i = 0, iBorder = cart.length; i < iBorder; i++) {
+                    productCount += cart[i].productNum
+                }
                 page.setData({
-                    cart: res.data.data
+                    cart: cart,
+                    productCount: productCount
                 })
                 page.computeSumMonney()
             }
@@ -110,9 +116,11 @@ Page({
             })
         }
         var showCart = cartTemp.length != 0
+        var productCount = this.data.productCount - 1
         this.setData({
             cart: cartTemp,
-            showCart: showCart
+            showCart: showCart,
+            productCount: productCount
         })
         this.computeSumMonney()
         wx.request({
@@ -152,8 +160,10 @@ Page({
             }
             cart.push(obj)
         }
+        var productCount = this.data.productCount + 1
         this.setData({
-            cart: cart
+            cart: cart,
+            productCount: productCount
         })
         this.computeSumMonney()
         wx.request({
@@ -173,7 +183,8 @@ Page({
         this.setData({
             cart: [],
             showCart: false,
-            sumMonney: 0
+            sumMonney: 0,
+            productCount: 0
         })
         wx.request({
             url: app.globalData.backendUrl + "/wechat/branches/" + app.globalData.branchId + "/clearCart",
@@ -192,16 +203,25 @@ Page({
         var itemHeight = this.data.itemHeight
         var menu = this.data.menu
         var scrollTop = e.detail.scrollTop
-        var scrollTopScale = this.data.scrollTopScale
         var acc = 0
         for (var i = 0, iBorder = menu.length; i < iBorder; i++) {
             acc = acc + (itemTabHeight + (itemHeight * menu[i].products.length))
-            if (scrollTop * scrollTopScale < acc) {
+            if (scrollTop < acc) {
                 this.setData({
                     currentCategoryIndex: i
                 })
                 break
             }
+        }
+    },
+    goBalance: function (e) {
+        if (this.data.cart.length != 0) {
+            wx.setStorageSync('cart', this.data.cart)
+            wx.setStorageSync('sumMonney', this.data.sumMonney)
+            wx.setStorageSync('productCount', this.data.productCount)
+            wx.navigateTo({
+                url: '../order/balance/balance'
+            })
         }
     }
 })

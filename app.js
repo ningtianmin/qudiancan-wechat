@@ -12,6 +12,17 @@ App({
                     success: res => {
                         console.log(res)
                         this.globalData.openid = res.data.data
+                        wx.request({
+                            url: getApp().globalData.backendUrl + "/wechat/beShopMember",
+                            method: 'POST',
+                            header: {
+                                "content-type": "application/x-www-form-urlencoded"
+                            },
+                            data: {
+                                branchId: getApp().globalData.branchId,
+                                openid: getApp().globalData.openid
+                            }
+                        })
                     }
                 })
             }
@@ -38,10 +49,10 @@ App({
         })
     },
     globalData: {
-        userInfo: null,
-        backendUrl: "http://127.0.0.1:8080",
+        userInfo: {},
+        backendUrl: "https://qudiancan.mynatapp.cc/qudiancan",
         branchId: 1,
         branchTableId: 1,
-        openid: null
+        openid: ""
     }
 })

@@ -10,7 +10,7 @@
     padding: 5px 20px;
     border: 1px solid #ff9c35;
     border-radius: 25px;
-    width: 100px;
+    width: 80%;
     z-index: 10;
 }
 
@@ -30,7 +30,7 @@
 }
 
 .btn-block {
-    width: 50%;
+    width: 100%;
     display: flex;
     justify-content: center;
 }

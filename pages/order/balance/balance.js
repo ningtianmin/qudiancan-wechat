@@ -1,13 +1,16 @@
+const app = getApp()
+
 Page({
 
     /**
      * 页面的初始数据
      */
     data: {
-        cartList: [],
+        cart: [],
         sumMonney: 0,
-        cutMonney: 0,
-        cupNumber: 0
+        currentTable: {},
+        tableOrder: null,
+        productCount: 0
     },
 
     /**
@@ -15,67 +18,101 @@ Page({
      */
     onLoad: function (options) {
         wx.setNavigationBarTitle({
-            title: '订单详情'
+            title: '去下单'
         })
         this.setData({
-            cartList: wx.getStorageSync('cartList'),
+            cart: wx.getStorageSync('cart'),
             sumMonney: wx.getStorageSync('sumMonney'),
-            cutMonney: wx.getStorageSync('sumMonney') > 19 ? 3 : 0,
-            cupNumber: wx.getStorageSync('cupNumber'),
-        })
-
-    },
-    gopay: function () {
-        wx.navigateTo({
-            url: '../detail/detail'
+            productCount: wx.getStorageSync('productCount')
         })
     },
-    /**
-     * 生命周期函数--监听页面初次渲染完成
-     */
-    onReady: function () {
-
-    },
-
-    /**
-     * 生命周期函数--监听页面显示
-     */
     onShow: function () {
-
+        this.setData({
+            cart: wx.getStorageSync('cart'),
+            sumMonney: wx.getStorageSync('sumMonney'),
+            productCount: wx.getStorageSync('productCount')
+        })
+        wx.showLoading({
+            title: '努力加载中',
+        })
+        wx.request({
+            url: app.globalData.backendUrl + "/wechat/tables/" + app.globalData.branchTableId,
+            data: {
+                openid: app.globalData.openid
+            },
+            success: res => {
+                console.log(res)
+                this.setData({
+                    currentTable: res.data.data.table,
+                    tableOrder: res.data.data.order
+                })
+            },
+            complete: function () {
+                wx.hideLoading()
+            }
+        })
     },
+    placeOrder: function () {
+        if (this.data.cart.length == 0) {
+            return
+        }
+        var url = ""
+        if (this.data.tableOrder == null) {
+            url = app.globalData.backendUrl + "/wechat/orders"
+        } else {
+            url = app.globalData.backendUrl + "/wechat/orders/addProducts"
+        }
+        var cart = this.data.cart
+        var cartDataArray = new Array()
+        for (var i = 0, iBorder = cart.length; i < iBorder; i++) {
+            cartDataArray.push({
+                productId: cart[i].productId,
+                productNum: cart[i].productNum
+            })
+        }
+        wx.showLoading({
+            title: '正在下单',
+        })
+        wx.request({
+            url: url,
+            method: 'POST',
+            header: {
+                "content-type": "application/x-www-form-urlencoded"
+            },
+            data: {
+                branchId: app.globalData.branchId,
+                branchTableId: app.globalData.branchTableId,
+                openid: app.globalData.openid,
+                note: "note",
+                cartData: JSON.stringify(cartDataArray),
+                orderId: this.data.tableOrder == null ? '' : this.data.tableOrder.id
+            },
+            success: res => {
+                console.log(res)
+                if (res.data.code != 1000) {
+                    wx.showToast({
+                        title: res.data.message,
+                        icon: 'none'
+                    })
+                    return
+                }
 
-    /**
-     * 生命周期函数--监听页面隐藏
-     */
-    onHide: function () {
-
-    },
-
-    /**
-     * 生命周期函数--监听页面卸载
-     */
-    onUnload: function () {
-
-    },
-
-    /**
-     * 页面相关事件处理函数--监听用户下拉动作
-     */
-    onPullDownRefresh: function () {
-
-    },
-
-    /**
-     * 页面上拉触底事件的处理函数
-     */
-    onReachBottom: function () {
-
-    },
-
-    /**
-     * 用户点击右上角分享
-     */
-    onShareAppMessage: function () {
-
+                wx.setStorageSync('cart', [])
+                wx.setStorageSync('sumMonney', 0)
+                wx.setStorageSync('productCount', 0)
+                wx.setStorageSync('order', res.data.data)
+                this.setData({
+                    cart: [],
+                    sumMonney: 0,
+                    productCount: 0
+                })
+                wx.navigateTo({
+                    url: '../detail/detail',
+                })
+            },
+            complete: function () {
+                wx.hideLoading()
+            }
+        })
     }
 })
