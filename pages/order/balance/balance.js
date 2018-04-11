@@ -41,7 +41,7 @@ Page({
                 openid: app.globalData.openid
             },
             success: res => {
-                console.log(res)
+                console.log("getTableOrder response:", res)
                 this.setData({
                     currentTable: res.data.data.table,
                     tableOrder: res.data.data.order
@@ -52,7 +52,8 @@ Page({
             }
         })
     },
-    placeOrder: function () {
+    placeOrder: function (e) {
+        console.log('placeOrder event:',e)
         if (this.data.cart.length == 0) {
             return
         }
@@ -83,13 +84,13 @@ Page({
                 branchId: app.globalData.branchId,
                 branchTableId: app.globalData.branchTableId,
                 openid: app.globalData.openid,
-                note: "note",
                 cartData: JSON.stringify(cartDataArray),
-                orderId: this.data.tableOrder == null ? '' : this.data.tableOrder.id
+                orderId: this.data.tableOrder == null ? '' : this.data.tableOrder.id,
+                note:e.detail.value.note
             },
             success: res => {
-                console.log(res)
-                if (res.data.code != 1000) {
+                console.log("placeOrder/addProducts response:", res)
+                if (res.data.code != 0) {
                     wx.showToast({
                         title: res.data.message,
                         icon: 'none'

@@ -10,7 +10,7 @@ App({
                         "jsCode": res.code
                     },
                     success: res => {
-                        console.log(res)
+                        console.log("login response:", res)
                         this.globalData.openid = res.data.data
                         wx.request({
                             url: getApp().globalData.backendUrl + "/wechat/beShopMember",
@@ -51,8 +51,8 @@ App({
     globalData: {
         userInfo: {},
         backendUrl: "https://qudiancan.mynatapp.cc/qudiancan",
-        branchId: 1,
-        branchTableId: 1,
-        openid: ""
+        branchId: null,
+        branchTableId: null,
+        openid: null
     }
 })

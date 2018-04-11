@@ -1,6 +1,16 @@
 <!--pages/order/list/list.wxml-->
 <view>
-   <view class='go-center' style='margin-top:20px' >
-     
-   </view>
+    <view wx:if="{{orderList!=null}}">
+        <view class="order-list-box" wx:for="{{orderList}}" wx:key="key" wx:item="item" bindtap='goOrderDetail' data-order='{{item}}'>
+            <view>门店名称：{{item.branchName}}</view>
+            <view>下单时间：{{item.createTime}}</view>
+            <view>总价：¥ {{item.totalSum}}</view>
+            <view>订单状态：{{item.orderStatus=='NEW'?'新订单':item.orderStatus=='CANCELED'?'已取消':item.orderStatus=='FINISHED'?'已完结':''}}</view>
+            <view style="display: flex; flex-direction:row; align-items: center;">
+                <view>支付状态：{{item.payStatus=='UNPAID'?'未支付':item.payStatus=='PAID'?'已支付':''}}</view>
+                <button wx:if="{{item.payStatus=='UNPAID'}}" style='padding: 5; align-self: flex-end;' catchtap='payOrder' data-order-number='{{item.orderNumber}}'>支付订单</button>
+            </view>
+            <view style='height: 2px; background: #888; margin: 3px 0;'></view>
+        </view>
+    </view>
 </view>

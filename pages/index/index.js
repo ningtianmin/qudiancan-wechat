@@ -12,7 +12,10 @@ Page({
         interval: 5000,
         duration: 1000
     },
-    onLoad: function () {
+    onLoad: function (options) {
+        console.log("page options:", options)
+        app.globalData.branchId = options["branchId"]
+        app.globalData.branchTableId = options["branchTableId"]
         // imgUrls通过后端api获得
     },
     golist: function () {

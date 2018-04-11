@@ -17,7 +17,7 @@ Page({
     computeSumMonney: function () {
         var cart = this.data.cart
         var sumMonney = 0
-        console.log(cart)
+        console.log("cart:", cart)
         for (var i = 0, iBorder = cart.length; i < iBorder; i++) {
             sumMonney += parseFloat((cart[i].sum).toFixed(2))
         }
@@ -32,7 +32,7 @@ Page({
         })
         wx.getSystemInfo({
             success: function (res) {
-                console.log(res)
+                console.log("getSystemInfo response:", res)
                 page.setData({
                     topHeight: res.screenHeight - res.windowHeight
                 })
@@ -42,8 +42,7 @@ Page({
             url: app.globalData.backendUrl + "/wechat/branches/" + app.globalData.branchId + "/products",
             method: 'GET',
             success: function (res) {
-                console.log(res)
-                console.log(res)
+                console.log("products response:", res)
                 page.setData({
                     menu: res.data.data
                 })
@@ -62,7 +61,7 @@ Page({
                 "openid": app.globalData.openid
             },
             success: res => {
-                console.log(res)
+                console.log("cart response:", res)
                 var cart = res.data.data
                 var productCount = 0
                 for (var i = 0, iBorder = cart.length; i < iBorder; i++) {
@@ -77,7 +76,7 @@ Page({
         })
     },
     selectMenu: function (e) {
-        console.log(e)
+        console.log("selectMenu event:", e)
         var categoryIndex = e.currentTarget.dataset.index
         this.setData({
             currentCategoryIndex: categoryIndex,
@@ -92,9 +91,8 @@ Page({
         }
     },
     subtractNum: function (e) {
-        console.log(e)
+        console.log("subtractNum event:", e)
         var productId = e.currentTarget.dataset.productId
-        console.log(productId)
         var cart = this.data.cart
         var cartTemp = new Array()
         for (var i = 0, iBorder = cart.length; i < iBorder; i++) {
@@ -137,7 +135,7 @@ Page({
 
     },
     addNum: function (e) {
-        console.log(e)
+        console.log("addNum event:", e)
         var productId = e.currentTarget.dataset.productId
         var cart = this.data.cart
         var exist = false
@@ -179,7 +177,7 @@ Page({
         })
     },
     clearCart: function (e) {
-        console.log(e)
+        console.log("clearCart event:", e)
         this.setData({
             cart: [],
             showCart: false,
@@ -198,7 +196,7 @@ Page({
         })
     },
     scroll: function (e) {
-        console.log(e)
+        console.log("scroll event:", e)
         var itemTabHeight = this.data.itemTabHeight
         var itemHeight = this.data.itemHeight
         var menu = this.data.menu

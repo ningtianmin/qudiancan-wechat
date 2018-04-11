@@ -16,7 +16,7 @@
                 <view class='issue-name'>
                     <view>{{productItem.name}}</view>
                     <view>{{productItem.description}}</view>
-                    <view style='margin-top:20rpx;color:#F05A86'>
+                    <view style='margin-top:10rpx; color:#F05A86;'>
                         ¥ {{productItem.price}}
                         <i class="iconfont icon-jiahao2fill plus-icon" data-type="{{index}}" data-index="{{indexs}}" bindtap="addNum" data-product="{{productItem}}" data-product-id="{{productItem.id}}"></i>
                     </view>

@@ -35,6 +35,7 @@ page {
     padding: 12px;
     border-bottom: 1px #e3e3e3 solid;
     align-self: center;
+    width: 300px;
 }
 
 .order-sum {
@@ -82,6 +83,7 @@ page {
 .order-info-li {
     color: black;
     margin-left: 10px;
+    width: 70%;
 }
 
 .note-card {

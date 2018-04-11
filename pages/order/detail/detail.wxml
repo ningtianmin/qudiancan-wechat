@@ -1,5 +1,7 @@
 <!--pages/order/detail/detail.wxml-->
 <view>
+    <button bindtap='goOrderList'>回到订单列表</button>
+    <button wx:if="{{order.payStatus=='UNPAID'}}" bindtap='payOrder'>支付订单</button>
     <!-- 订单详情 -->
     <view class='order-info'>
         <view class='order-info-title' style='color:#ff9c35'>订单详情</view>

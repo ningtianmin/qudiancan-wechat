@@ -1,5 +1,6 @@
 <!--pages/order/balance/balance.wxml-->
 <view>
+    <view style="padding: 5px; color: #FF0000;">当前桌台：{{currentTable.name}}</view>
     <!-- 该桌台已点商品 -->
     <view class='order-info' wx:if="{{tableOrder!=null}}">
         <view class='order-info-title' style='color:#FF0000'>该桌台已点商品</view>
@@ -34,24 +35,25 @@
             <label class='order-sum-number activity-color'>¥ {{sumMonney}}</label>
         </view>
     </view>
-    <!-- 备注 -->
-    <view class='note'>
-        <label style='font-size:13px;color:#A3A3A3'>备注</label>
-        <textarea placeholder='请输入备注' class='note-text'></textarea>
-    </view>
-    <!-- 底部操作栏 -->
-    <view class="operate-bar">
-        <view class='gouwuche'>
-            <view style='padding:5px;display:flex'>
-                <i class="iconfont icon-gouwuchefill gouwuche-icon activity-color">
-                    <span class="number-msg" wx:if="{{productCount!=0}}">{{productCount}}</span>
-                </i>
-                <view class='gouwuche-price' style='color:white;font-size:18px'>¥ {{sumMonney}}</view>
+    <form bindsubmit='placeOrder'>
+        <!-- 备注 -->
+        <view class='note'>
+            <label style='font-size:13px;color:#A3A3A3'>备注</label>
+            <textarea placeholder='请输入备注' class='note-text' maxlength='50' name='note'></textarea>
+        </view>
+        <!-- 底部操作栏 -->
+        <view class="operate-bar">
+            <view class='gouwuche'>
+                <view style='padding:5px;display:flex'>
+                    <i class="iconfont icon-gouwuchefill gouwuche-icon activity-color">
+                        <span class="number-msg" wx:if="{{productCount!=0}}">{{productCount}}</span>
+                    </i>
+                    <view class='gouwuche-price' style='color:white;font-size:18px'>¥ {{sumMonney}}</view>
+                </view>
+            </view>
+            <view class="submit-btn {{sumMonney!=0?'activity-color-bg':''}}">
+                <button class="submit-btn-label {{sumMonney!=0?'color-black':''}}" disabled='{{sumMonney==0}}' form-type='submit'>去下单</button>
             </view>
         </view>
-        <view class="submit-btn {{sumMonney!=0?'activity-color-bg':''}}" bindtap='placeOrder'>
-            <view class="submit-btn-label {{sumMonney!=0?'color-white':''}}">去下单</view>
-        </view>
-    </view>
-
+    </form>
 </view>
