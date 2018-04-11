@@ -14,8 +14,10 @@ Page({
     },
     onLoad: function (options) {
         console.log("page options:", options)
-        app.globalData.branchId = options["branchId"]
-        app.globalData.branchTableId = options["branchTableId"]
+        if (options["branchId"] != null && options["branchTableId"] != null) {
+            app.globalData.branchId = options["branchId"]
+            app.globalData.branchTableId = options["branchTableId"]
+        }
         // imgUrls通过后端api获得
     },
     golist: function () {

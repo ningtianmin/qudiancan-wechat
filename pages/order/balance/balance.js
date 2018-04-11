@@ -36,7 +36,7 @@ Page({
             title: '努力加载中',
         })
         wx.request({
-            url: app.globalData.backendUrl + "/wechat/tables/" + app.globalData.branchTableId,
+            url: app.globalData.backendUrl + '/wechat/tables/' + app.globalData.branchTableId,
             data: {
                 openid: app.globalData.openid
             },
