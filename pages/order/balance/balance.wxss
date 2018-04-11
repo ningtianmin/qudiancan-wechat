@@ -189,3 +189,15 @@ page {
 .color-white {
     color: white;
 }
+
+button::after {
+    border: none;
+}
+
+.has-product {
+    background-color:  #ff9c35;
+    color: #ffffff;
+}
+.no-product {
+    background-color: #000000;
+}

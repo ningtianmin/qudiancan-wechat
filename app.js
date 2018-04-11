@@ -51,8 +51,8 @@ App({
     globalData: {
         userInfo: {},
         backendUrl: "https://qudiancan.mynatapp.cc/qudiancan",
-        branchId: null,
-        branchTableId: null,
+        branchId: 1,
+        branchTableId: 1,
         openid: null
     }
 })

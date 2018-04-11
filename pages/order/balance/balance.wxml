@@ -52,7 +52,7 @@
                 </view>
             </view>
             <view class="submit-btn {{sumMonney!=0?'activity-color-bg':''}}">
-                <button class="submit-btn-label {{sumMonney!=0?'color-black':''}}" disabled='{{sumMonney==0}}' form-type='submit'>去下单</button>
+                <button class="submit-btn-label {{sumMonney!=0?'has-product':'no-product'}}" disabled='{{sumMonney==0}}' form-type='submit'>去下单</button>
             </view>
         </view>
     </form>
