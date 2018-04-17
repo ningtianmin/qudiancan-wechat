@@ -9,7 +9,7 @@ App({
                     data: {
                         "jsCode": res.code
                     },
-                    success: res => {
+                    complete: res => {
                         console.log("login response:", res)
                         this.globalData.openid = res.data.data
                         wx.request({
